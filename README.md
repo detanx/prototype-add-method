@@ -17,10 +17,11 @@
 #### 1、globalReplace
 ```javascript
 //将某个字符串中的某个字段全部替换为新的字段
-str.globalReplace(oldStr, newStr)
+str.globalReplace(oldStr, newStr, isIgnoreCase)
 str：目标字符串
 oldStr：目标字符串中需要替换的字段
 newStr：替换成新的字段
+isIgnoreCase：Boolean值，是否忽略英文大小写，默认为false
 ```
 #### 2、findAllPosition
 ```
@@ -31,10 +32,10 @@ subStr：查找的字符串
 ```
 #### 3、findAllOccurrences
 ```
-//查找数组中某个字符的所有位置
+//查找数组（限一维、二维数组）中某个字符的所有位置
 arr.findAllOccurrences(target)
 arr：目标数组
-subStr：查找的元素
+target：查找的元素
 ```
 #### 4、uniqueElement
 ```
@@ -55,47 +56,16 @@ arr.removeItem(target)
 arr：目标数组
 target：需要移除的元素
 ```
-#### 3、findAllOccurrences
+#### 7、addItem
 ```
-//查找数组中某个字符的所有位置
-arr.findAllOccurrences(target)
-str：目标数组
-subStr：查找的元素
+//数组移指定位置index处添加元素item
+arr.addItem(target)
+arr：目标数组
+target：需要添加的元素
 ```
-#### 3、findAllOccurrences
+#### 8、duplicates
 ```
-//查找数组中某个字符的所有位置
-arr.findAllOccurrences(target)
-str：目标数组
-subStr：查找的元素
-```
-#### 4、执行
-```javascript
-1、在项目根目录：npm run dev
-// npm run build(打包)
-2、另打开一个命令窗口，在react-redux\src\nodejs下执行：node startexe.js
-```
-#### 5、打开浏览器浏览 http://localhost:3000/
-
-Tips：在安装node-sass的时候，有可能不成功，如不成功，请先删除 node_modules ，然后将镜像源换成taobao的，再执行npm install 或 yarn install；
-* 删除 node_modules
-```javascript
-rd/s/q node_modules
-```
-* 切换淘宝镜像源
-```bash
-npm config set registry http://registry.npm.taobao.org
-或
-yarn config set registry http://registry.npm.taobao.org
-```
-* 再安装依赖
-```bash
-npm install
-yarn 或 yarn install
-```
-也可以单独为node-sass设置淘宝的二进制包镜像
-```bash
-npm config set sass_binary_site http://cdn.npm.taobao.org/dist/node-sass -g
-或
-yarn config set sass_binary_site http://cdn.npm.taobao.org/dist/node-sass -g
+//数组重复出现的元素
+arr.duplicates()
+arr：目标数组
 ```
