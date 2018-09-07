@@ -1,26 +1,62 @@
 //将某个字符串中的某个字段全部替换为新的字段
 String.prototype.globalReplace =
 String.prototype.globalReplace ||function(oldStr, newStr, isIgnoreCase){//oldStr替换成newStr 
-  isIgnoreCase = typeof isIgnoreCase === 'boolean' ? "gi" : "g";
-  let reg = new RegExp(oldStr, isIgnoreCase); //创建正则RegExp对象 
-  return this.replace(reg, newStr); 
+  if(typeof isIgnoreCase === 'boolean' && isIgnoreCase.toString() === 'true') {
+    isIgnoreCase = 'gi'
+  }else {
+    isIgnoreCase = 'g'
+  }
+  try {
+    if(typeof oldStr === 'undefined') {
+      throw new SyntaxError('GlobalReplace methods lack of parameters.' );
+    }
+    if(typeof newStr === 'undefined') {
+      throw new SyntaxError('GlobalReplace methods lack of parameters.' );
+    }
+    let reg = new RegExp(oldStr, isIgnoreCase); //创建正则RegExp对象 
+    return this.replace(reg, newStr); 
+  }
+  catch(err) {
+    console.error(err);
+  }
 }
 
 //查找字符串中某个字符串的所有起始位置
-String.prototype.findAllPosition = 
-String.prototype.findAllPosition || function(subStr) {
+String.prototype.strCharPositions = 
+String.prototype.strCharPositions || function(subStr) {
   let arr = [];
-  let positions = this.indexOf(subStr);
-  while(positions > -1){
-    arr.push(positions);
-    positions = this.indexOf(subStr,positions + 1);
+  try {
+    if(typeof subStr === 'undefined') {
+      throw new SyntaxError('findAllPosition methods lack of parameters.')
+    }
+    let positions = this.indexOf(subStr);
+    while(positions > -1){
+      arr.push(positions);
+      positions = this.indexOf(subStr,positions + 1);
+    }
+    return arr;
   }
-  return arr;
+  catch (err) {
+    console.error(err);
+  } 
+}
+
+//获取数组的维度
+let GlobalArrayCount = 1;
+Array.prototype.multiArray = 
+Array.prototype.multiArray || function() {
+  for (let i = 0;i < this.length;i ++){
+    if(this[i] instanceof Array){
+      GlobalArrayCount ++;
+      this[i].multiArray();
+    }
+  }
+  return GlobalArrayCount;
 }
 
 //查找数组中某个字符的所有位置
-Array.prototype.findAllOccurrences = 
-Array.prototype.findAllOccurrences || function (target) {
+Array.prototype.targetOccurs = 
+Array.prototype.targetOccurs || function(target) {
   var result = [];
   for(let i = 0;i < this.length; i ++) {
     if(this[i] instanceof Array) {
@@ -35,37 +71,59 @@ Array.prototype.findAllOccurrences || function (target) {
   return result;
 }
 
-//数组去重
+//数组去重(一维数组至多维数组)
 Array.prototype.uniqueElement = 
 Array.prototype.uniqueElement || function() {
   //判断是否支持[native code]
   function isNative(api){
-    return /native code/.test(api.toString())&&typeof api !== 'undefined'
+    return /native code/.test(api.toString()) && typeof api !== 'undefined'
   }
-  if(isNative(Set)) {
-    return Array.from(new Set(this))
-  }
-  let newarr = [];
-  let len = this.length;
-  for(let i = 0 ; i < len ; i ++ ) {
-    if(newarr.indexOf(this[i]) === -1) {
-      newarr.push(this[i])
+  for (let i = 0;i < this.length;i ++){
+    if(this[i] instanceof Array){
+      if(isNative(Set)) {
+        this[i] = Array.from(new Set(this[i]));
+      }
+      else {
+        let newarr = [];
+        let len = this[i].length;
+        for(let j = 0 ; j < len ; j ++ ) {
+          if(newarr.indexOf(this[i][j]) === -1) {
+            newarr.push(this[i][j])
+          }
+        }
+        this[i] = newarr;
+      }
+      this[i].uniqueElement();
     }
   }
-  return newarr
+  return Array.from(new Set(this));;
 }
 
 //数组求和
+let sum = 0,
+numberExecutions = 0;//arraySum执行次数
 Array.prototype.arraySum = 
 Array.prototype.arraySum || function() {
-  var sum = 0;
-  this.forEach( (item) => 
+  ++ numberExecutions;
+  if(numberExecutions === 1) {
+    this.forEach( (item) => 
     {
       if(typeof item === 'number' && !isNaN(item)) {
         sum += item
       }
+    });
+  }
+  for (let i = 0;i < this.length;i ++){
+    if(this[i] instanceof Array){
+      this[i].forEach( (item) => 
+      {
+        if(typeof item === 'number' && !isNaN(item)) {
+          sum += item
+        }
+      });
+      this[i].arraySum();
     }
-  );
+  }
   return sum;
 }
 
