@@ -10,8 +10,9 @@
   检测是否安装node环境：win + r 输入cmd，在窗口中再输入node -v
   在项目中安装：npm init 
                 npm install --save-dev prototype-add-method
-  使用：import 'prototype-add-method'
-        require('prototype-add-method')
+  使用：1、import 'prototype-add-method'
+        2、require('prototype-add-method')
+        3、script标签引入dist文件夹下的prototype-add-method.js
 ```
 ### 方法api列表
 #### 1、globalReplace
