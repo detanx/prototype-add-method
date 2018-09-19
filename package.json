@@ -4,7 +4,7 @@
   "description": "README.md",
   "main": "dist/prototype-add-method.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --reporter spec",
     "start": "webpack --progress --colors --watch --inline"
   },
   "author": "",
@@ -26,5 +26,9 @@
     "uglifyjs-webpack-plugin": "^1.3.0",
     "webpack": "^4.18.0",
     "webpack-cli": "^3.1.0"
+  },
+  "dependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^5.2.0"
   }
 }
