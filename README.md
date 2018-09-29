@@ -75,17 +75,17 @@ arr：目标数组
 用法: arr.multiArray()
 arr：目标数组
 ```
-#### 10、getMousePosition
+#### 10、获取鼠标位置
 ```
 //获取鼠标位置对象，包含三个方法，返回鼠标位置对象{x:"",y:""}
 //相对屏幕位置
-  用法: getMousePosition.screen(event);//event为事件状态对象
+  用法: screenMousePosition(event);//event为事件状态对象
 //相对浏览器位置
-  用法: getMousePosition.browser(event);//event为事件状态对象
+  用法: browserMousePosition(event);//event为事件状态对象
 //相对文档位置
-  用法: getMousePosition.document(event);//event为事件状态对象
+  用法: documentMousePosition(event);//event为事件状态对象
 示例：window.onmousemove = function(e) {
-      console.log(getMousePosition.screen(e))
+      console.log(screenMousePosition(e))
      }
 ```
 #### 11、isEmpty
