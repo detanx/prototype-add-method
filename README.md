@@ -9,9 +9,9 @@
   在项目中首先安装node环境
   检测是否安装node环境：win + r 输入cmd，在窗口中再输入node -v
   在项目中安装：npm init 
-                npm install --save-dev prototype-add-method
+          npm install --save-dev prototype-add-method
   使用：import 'prototype-add-method'
-        require('prototype-add-method')
+     require('prototype-add-method')
 ```
 ### 方法api列表
 #### 1、globalReplace
@@ -117,6 +117,14 @@ B 子字符串/数组
 用法: createVerificode(n)
 n 整数
 示例：createVerificode(6) // "abc123"
+```
+#### 15、stringHTU
+```
+//字符串驼峰式转下划线，返回string
+用法: stringHTU(n) 
+str 需转换的字符串
+示例：stringHTU("sNamessS11") // "s_namess_s_11"
+HTU (Hump transfer underline)
 ```
 ### 参与人员
 [detanx](https://github.com/detanx)
