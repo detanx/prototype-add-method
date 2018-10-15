@@ -352,7 +352,7 @@
       }
     }while(reg.lastIndex > 0)
   }
-},
+}
     //这里确定了插件的名称
     // if (typeof module !== 'undefined' && module.exports) {
     //   module.exports = _plugin_api;
