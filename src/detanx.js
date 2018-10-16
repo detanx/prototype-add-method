@@ -9,16 +9,16 @@
       numberExecutions = 0;//arraySum执行次数
   //定义一些api
   var _plugin_api = {
-    /**
-      * @description 将某个字符串中的某个字段全部替换为新的字段
-      * @example str.globalReplace(oldStr, newStr, isIgnoreCase)
-      * @example str.globalReplace(oldStr, newStr)
-      * @param oldStr {string}  - 目标字符串中需要替换的字段.
-      * @param newStr {string}  - 替换成新的字段.
-      * @param isIgnoreCase {boolean}  - 是否忽略英文大小写，默认为false.
-      * @return {array}
-    */
-  globalReplace : function(str, oldStr, newStr, isIgnoreCase){//oldStr替换成newStr 
+/**
+  * @description 将某个字符串中的某个字段全部替换为新的字段
+  * @example str.strAllSub(oldStr, newStr, isIgnoreCase)
+  * @example str.strAllSub(oldStr, newStr)
+  * @param oldStr {string}  - 目标字符串中需要替换的字段.
+  * @param newStr {string}  - 替换成新的字段.
+  * @param isIgnoreCase {boolean}  - 是否忽略英文大小写，默认为false.
+  * @return {array}
+*/
+  strAllSub : function(str, oldStr, newStr, isIgnoreCase){//oldStr替换成newStr 
     if(typeof isIgnoreCase === 'boolean' && isIgnoreCase.toString() === 'true') {
       isIgnoreCase = 'gi'
     }else {
@@ -40,11 +40,11 @@
   },
 /**
   * @description 查找字符串中某个字符串的所有起始位置
-  * @example str.strCharPositions(subStr)
+  * @example str.strCharPos(subStr)
   * @param subStr {string}  - 查找的字符串.
   * @return {array}
 */
-  strCharPositions : function(str, subStr) {
+  strCharPos : function(str, subStr) {
     let arr = [];
     try {
       if(typeof subStr === 'undefined') {
@@ -63,10 +63,10 @@
   },
 /**
   * @description 获取数组的维度
-  * @example arr.multiArray()
+  * @example arr.arrayDimen()
   * @return {number}
 */
-  multiArray : function(arr) {
+  arrayDimen : function(arr) {
     let GlobalArrayCount = 1;
     for (let i = 0;i < arr.length;i ++){
       if(arr[i] instanceof Array){
@@ -78,10 +78,10 @@
   },
 /**
   * @description 查找数组（限一维、二维数组）中某个字符的所有位置
-  * @example arr.targetOccurs()
+  * @example arr.arrayCharPos()
   * @return {array}
 */
-  targetOccurs : function(arr, target) {
+  arrayCharPos : function(arr, target) {
     var result = [];
     for(let i = 0;i < arr.length; i ++) {
       if(arr[i] instanceof Array) {
@@ -97,10 +97,10 @@
   },
 /**
   * @description 任意维度数组去重
-  * @example arr.uniqueElement()
+  * @example arr.arrayDeweight()
   * @return {array}
 */
-  uniqueElement : function(arr) {
+  arrayDeweight : function(arr) {
     //判断是否支持[native code]
     function isNative(api){
       return /native code/.test(api.toString()) && typeof api !== 'undefined'
@@ -180,10 +180,10 @@
   },
 /**
   * @description 获取数组重复出现的元素
-  * @example arr.duplicates()
+  * @example arr.repeatEle()
   * @return {array}
 */
-  duplicates : function() {
+  repeatEle : function() {
     var len = arr.length
     var newarr = []
     for(var i = 0; i< len;i ++) {
@@ -201,17 +201,17 @@
   * @return {object}
 */
   //相对屏幕位置
-  screenMousePosition:function(event) {
+  screenMousePos:function(event) {
   var e = event || window.event;
     return {'x':e.screenX,'y':e.screenY}
   },
   //相对屏幕位置
-  browserMousePosition:function(event) {
+  browserMousePos:function(event) {
     var e = event || window.event;
     return {'x':e.clientX,'y':clientY}
   },
   //相对文档位置
-  documentMousePosition:function(event) {
+  documentMousePos:function(event) {
     var e = event || window.event;
     var scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
     var scrollY = document.documentElement.scrollTop || document.body.scrollTop;
@@ -284,11 +284,11 @@
       
 /**
  * @description //生成随机n个字母或数字
- * @example 用法: createVerificode(n) 
+ * @example 用法: randomCode(n) 
  * @param {Number} n 整数
  * @return {String} 
  */
-  createVerificode:function(n) {
+  randomCode:function(n) {
     try {
       if(typeof n === 'undefined') {
         n = 4;
@@ -354,12 +354,14 @@
   }
 }
     //这里确定了插件的名称
-    // if (typeof module !== 'undefined' && module.exports) {
-    //   module.exports = _plugin_api;
-    // } else if (typeof define === 'function' && define.amd) {
-    //   define(function(){return CJPlugin;});
-    // } else {
-    //   window.CJPlugin = _plugin_api;
-    // }
-    window.CJPlugin = _plugin_api;
+//  if (typeof module !== 'undefined' && module.exports) {
+//    module.exports = _plugin_api;
+//  } else if (typeof define === 'function' && define.amd) {
+//    define(function(){return CJPlugin;});
+//  } else {
+//    window.CJPlugin = _plugin_api;
+//  }
+    if (typeof _detanx !== "undefined") {
+      window._detanx = _plugin_api;
+    }
 })();
