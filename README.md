@@ -105,12 +105,12 @@ arr：目标数组
       console.log(_detanx.screenMousePosition(e))
      }
 ```
-#### _detanx.isEmpty
+#### isEmpty
 ```
 //判断js数组/对象是否为空，返回boolean
 用法: _detanx.isEmpty(arr/obj)
 arr/obj: 目标数组/对象
-示例：isEmpty([1, 2, 3, 4]) // false
+示例：_detanx.isEmpty([1, 2, 3, 4]) // false
 ```
 #### segArray
 ```
@@ -118,7 +118,7 @@ arr/obj: 目标数组/对象
 用法: segArray(arr, size)
 arr: 目标数组
 length: 分段大小
-示例：segArray([1, 2, 3, 4], 2) // [[1, 2], [3, 4]]
+示例：_detanx.segArray([1, 2, 3, 4], 2) // [[1, 2], [3, 4]]
 ```
 #### isInclude
 ```
@@ -135,7 +135,7 @@ B 子字符串/数组
 n 整数
 示例：_detanx.randomCode(6) // "abc123"
 ```
-#### 15、stringHTU
+#### stringHTU
 ```
 //字符串驼峰式转下划线，返回string
 用法: _detanx.stringHTU(str) 
