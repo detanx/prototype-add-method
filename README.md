@@ -1,5 +1,4 @@
 ## prototype-add-method
-![首页](/pic.gif)
 ### 使用
 ####  下载安装
 ```javascript
@@ -8,12 +7,25 @@
 3、npm下载：
  在项目中首先安装node环境
  检测是否安装node环境：win + r 输入cmd，在窗口中再输入node -v
- 在项目中安装：npm init 
-          npm install --save-dev prototype-add-method
- 使用   1、import 'prototype-add-method'
-    2、require('prototype-add-method')
-    3、引入dist/prototype-add-method.js
+ 在项目中安装：
+  npm i prototype-add-method
+ 使用：
+  1、import 'prototype-add-method'
+  2、require('prototype-add-method')
+  3、引入dist/prototype-add-method.js
 ```
+### v1.0.8更新
+#### 插件名
+1、插件名暂定为_detanx，后续如有变化将在版本更新中说明。
+#### 方法api更新
+1、移除获取数组维度方法：arrayDimen(arr)
+#### bug修改
+1、全局对象_detanx设置错误，导致无法读取，并添加_detanx已声明抛出异常。
+#### api方法介绍完善
+1、_detanx.stringHTU(str)在循环调用时，每次结束之后需要重置stringHTUarr数组为空，stringHTUarr = []。
+2、多个方法添加用法示例。
+3、解决repeatEle(arr)方法无法判断元素为NaN时是否重复
+
 ### 方法api列表
 #### strAllSub
 ```javascript
@@ -22,7 +34,8 @@
 str：目标字符串
 oldStr：必填,目标字符串中需要替换的字段
 newStr：必填,替换成新的字段
-isIgnoreCase：可选，Boolean值，是否忽略英文大小写，默认为false
+isIgnoreCase：可选，Boolean值，是否忽略英文大小写，默认为false，即不忽略
+示例：_detanx.strAllSub("str",'s',"QWQ") // QWQtr
 ```
 #### strCharPos
 ```
@@ -30,6 +43,7 @@ isIgnoreCase：可选，Boolean值，是否忽略英文大小写，默认为fals
 用法: _detanx.strCharPos(str, subStr)
 str：目标字符串
 subStr：查找的字符串
+示例：_detanx.strCharPos("scssa","c") // [1]
 ```
 #### arrayCharPos
 ```
@@ -37,18 +51,23 @@ subStr：查找的字符串
 用法: _detanx.arrayCharPos(arr, target)
 arr：目标数组
 target：查找的元素
+示例：_detanx.arrayCharPos([1,2,3],2) // [1]
+    _detanx.arrayCharPos([[2,1,2],[1,2,3]],2) // [[0, 0],[0, 2],[1, 1]]
 ```
 #### arrayDeweight
 ```
 //数组去重，一维数组至多维数组，返回去重后的数组
 用法: _detanx.arrayDeweight(arr)
 arr：目标数组
+示例：_detanx.arrayDeweight([1,2,3,2]) // [1,2,3]
+    _detanx.arrayDeweight([[1,2,3,3],[1,2,1]]) // [[1,2,3],[1,2]]
 ```
 #### arraySum
 ```
 //数组求和，一维数组至多维数组，，当数组中传入null，undefined，NaN，字符串等非数字会被忽略，返回数组中数字相加之和（Number类型）
 用法: _detanx.arraySum(arr)
 arr：目标数组
+示例：_detanx.arraySum([1,2,3,NaN,undefined]) // 6
 ```
 #### removeItem
 ```
@@ -56,6 +75,7 @@ arr：目标数组
 用法: _detanx.removeItem(arr, target)
 arr：目标数组
 target：需要移除的元素
+示例：_detanx.removeItem([1,2,3,NaN],NaN) //  [1, 2, 3]
 ```
 #### addItem
 ```
@@ -63,17 +83,13 @@ target：需要移除的元素
 用法: _detanx.addItem(arr, target)
 arr：目标数组
 target：需要添加的元素
+示例：_detanx.addItem([1,2,3,NaN],1) // [1,1,2,3,NaN]
 ```
 #### repeatEle
 ```
 //数组重复出现的元素，一维数组，返回所有重复元素组成的新数组
 用法: _detanx.repeatEle(arr)
-arr：目标数组
-```
-#### 9、arrayDimen
-```
-//获取数组的维度，返回number
-用法: _detanx.arrayDimen(arr)
+示例：_detanx.repeatEle([1,2,3,NaN,2,NaN]) // [2,NaN]
 arr：目标数组
 ```
 #### 获取鼠标位置
@@ -122,7 +138,7 @@ n 整数
 #### 15、stringHTU
 ```
 //字符串驼峰式转下划线，返回string
-用法: _detanx.stringHTU(n) 
+用法: _detanx.stringHTU(str) 
 str 需转换的字符串
 示例：_detanx.stringHTU("sNamessS11") // "s_namess_s_11"
 HTU (Hump transfer underline)

@@ -5,14 +5,12 @@
       default_word:'default hello'                
   }
   let stringHTUarr = [],//stringHTU存储index下标
-      sum = 0,
       numberExecutions = 0;//arraySum执行次数
   //定义一些api
   var _plugin_api = {
 /**
   * @description 将某个字符串中的某个字段全部替换为新的字段
-  * @example str.strAllSub(oldStr, newStr, isIgnoreCase)
-  * @example str.strAllSub(oldStr, newStr)
+  * @param str 目标字符串
   * @param oldStr {string}  - 目标字符串中需要替换的字段.
   * @param newStr {string}  - 替换成新的字段.
   * @param isIgnoreCase {boolean}  - 是否忽略英文大小写，默认为false.
@@ -26,10 +24,10 @@
     }
     try {
       if(typeof oldStr === 'undefined') {
-        throw new SyntaxError('GlobalReplace methods lack of parameters.' );
+        throw new SyntaxError('strAllSub methods lack of parameters.' );
       }
       if(typeof newStr === 'undefined') {
-        throw new SyntaxError('GlobalReplace methods lack of parameters.' );
+        throw new SyntaxError('strAllSub methods lack of parameters.' );
       }
       let reg = new RegExp(oldStr, isIgnoreCase); //创建正则RegExp对象 
       return str.replace(reg, newStr); 
@@ -40,7 +38,7 @@
   },
 /**
   * @description 查找字符串中某个字符串的所有起始位置
-  * @example str.strCharPos(subStr)
+  * @param str 目标字符串
   * @param subStr {string}  - 查找的字符串.
   * @return {array}
 */
@@ -48,7 +46,7 @@
     let arr = [];
     try {
       if(typeof subStr === 'undefined') {
-        throw new SyntaxError('findAllPosition methods lack of parameters.')
+        throw new SyntaxError('strCharPos methods lack of parameters.')
       }
       let positions = str.indexOf(subStr);
       while(positions > -1){
@@ -62,23 +60,9 @@
     } 
   },
 /**
-  * @description 获取数组的维度
-  * @example arr.arrayDimen()
-  * @return {number}
-*/
-  arrayDimen : function(arr) {
-    let GlobalArrayCount = 1;
-    for (let i = 0;i < arr.length;i ++){
-      if(arr[i] instanceof Array){
-        GlobalArrayCount ++;
-        arr[i].multiArray();
-      }
-    }
-    return GlobalArrayCount;
-  },
-/**
   * @description 查找数组（限一维、二维数组）中某个字符的所有位置
-  * @example arr.arrayCharPos()
+  * @param arr 目标数组
+  * @param target 查询元素
   * @return {array}
 */
   arrayCharPos : function(arr, target) {
@@ -97,7 +81,7 @@
   },
 /**
   * @description 任意维度数组去重
-  * @example arr.arrayDeweight()
+  * @param arr 目标数组
   * @return {array}
 */
   arrayDeweight : function(arr) {
@@ -120,17 +104,18 @@
           }
           arr[i] = newarr;
         }
-        arr[i].uniqueElement();
+        this.arrayDeweight(arr[i]);
       }
     }
     return Array.from(new Set(arr));;
   },
 /**
   * @description 任意维度数组求和
-  * @example arr.arraySum()
+  * @param arr 目标数组
   * @return {array}
 */
   arraySum : function(arr) {
+    let sum = 0;
     ++ numberExecutions;
     if(numberExecutions === 1) {
       arr.forEach( (item) => 
@@ -156,7 +141,8 @@
 
 /**
   * @description 数组移除元素item
-  * @example arr.addItem()
+  * @param arr 目标数组
+  * @param item 移除元素
   * @return {array}
 */
   removeItem : function(arr, item){
@@ -170,26 +156,43 @@
   },
 /**
   * @description 数组指定位置index处添加元素item
-  * @example arr.addItem()
+  * @param arr 目标数组
+  * @param item 添加元素
+  * @param index 添加位置
   * @return {array}
 */
   addItem : function(arr, item, index) {
-    var s1 = arr.slice(0,index)
-    var s2 = arr.slice(index)
-    return s1.concat([item],s2)
+    try {
+      if(typeof item === 'undefined') {
+        throw new SyntaxError('addItem methods lack of parameters.' );
+      }
+      if(typeof index === 'undefined') {
+        index = arr.length;
+      }
+      var s1 = arr.slice(0,index)
+      var s2 = arr.slice(index)
+      return s1.concat([item],s2)
+    }
+    catch(err) {
+      console.error(err);
+    }
   },
 /**
   * @description 获取数组重复出现的元素
   * @example arr.repeatEle()
   * @return {array}
 */
-  repeatEle : function() {
-    var len = arr.length
-    var newarr = []
-    for(var i = 0; i< len;i ++) {
-      var temp = arr[0];
-      arr.shift()
-      if(arr.indexOf(temp) != -1 && newarr.indexOf(temp) == -1) {
+  repeatEle : function(arr) {
+    var len = arr.length;
+    var newarr = [],toArr = [];
+    for(let j = 0;j < len;j ++) {
+      toArr.push((isNaN(arr[j]) === true ? JSON.stringify(arr[j]) : arr[j]))
+    }
+    for(let i = 0; i< len;i ++) {
+      var temp = toArr[0];
+      toArr.shift()
+      if(toArr.indexOf(temp) != -1 && newarr.indexOf(temp) == -1) {
+        temp = temp === "null" ? NaN:temp;
         newarr.push(temp)
       }
     }
@@ -197,7 +200,7 @@
   },
 /**
   * @description 获取鼠标位置
-  * @param event
+  * @param event 事件对象
   * @return {object}
 */
   //相对屏幕位置
@@ -294,10 +297,10 @@
         n = 4;
       }
       if(isNaN(n)) {
-        throw new SyntaxError('The parameters of the createVerificode method is not a valid positive integer.' );
+        throw new SyntaxError('The parameters of the randomCode method is not a valid positive integer.' );
       }
       if(typeof n !== "number" && typeof Math.abs(Number(n)) !== 'number') {
-        throw new SyntaxError('The parameters of the createVerificode method is not a valid positive integer.' );
+        throw new SyntaxError('The parameters of the randomCode method is not a valid positive integer.' );
       }
       let codeArr = [0,1,2,3,4,5,6,7,8,9,'q','w','e','r','t','y','u','i','o','p','a','s','d','f','g','h','j','k','l','z','x','c','v','b','n','m','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R',  
      'S','T','U','V','W','X','Y','Z'];
@@ -314,7 +317,7 @@
   },
 /**
  * @description //字符串驼峰式转下划线
- * @example 用法: createVerificode(n) 
+ * @example 用法: stringHTU(str) 多次调用，每次使用后须将stringHTUarr置为空，stringHTUarr=[]
  * @param {String} str 需转换的字符串
  * @return {String} 
  * HTU (Hump transfer underline)
@@ -361,7 +364,14 @@
 //  } else {
 //    window.CJPlugin = _plugin_api;
 //  }
-    if (typeof _detanx !== "undefined") {
+  try{
+    if (typeof _detanx === "undefined") {
       window._detanx = _plugin_api;
+    }else {
+      throw new Error("_detanx is defined.")
     }
+  }catch(err) {
+    console.log(err)
+  }
+    
 })();

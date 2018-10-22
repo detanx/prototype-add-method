@@ -1,6 +1,6 @@
 {
   "name": "prototype-add-method",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "README.md",
   "main": "dist/prototype-add-method.js",
   "scripts": {
