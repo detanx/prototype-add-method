@@ -354,6 +354,16 @@
         stringHTUarr.push(reg.lastIndex-1)
       }
     }while(reg.lastIndex > 0)
+  },
+/**
+ * @description //检查其是否符合美元书写格式
+ * @example 用法:  _detanx.isUSD(str)
+ * @param {String} str 需检测的字段
+ * @return {Boolean} 
+*/
+  isUSD:function(str) {       
+    var re = /^\$([1-9]\d{0,2}(,\d{3})*|0)(\.\d{2})?$/;
+    return re.test(str);
   }
 }
     //这里确定了插件的名称

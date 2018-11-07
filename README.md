@@ -14,21 +14,26 @@
   2、require('prototype-add-method')
   3、引入dist/prototype-add-method.js
 ```
-### v1.0.8更新
+### v1.0.9更新
 #### 插件名
 1、插件名暂定为_detanx，后续如有变化将在版本更新中说明。
 #### 方法api更新
-1、移除获取数组维度方法：arrayDimen(arr)
+1、新增检查其是否符合美元书写格式方法：isUSD(str)
 #### bug修改
-1、全局对象_detanx设置错误，导致无法读取，并添加_detanx已声明抛出异常。
+1、无
 #### api方法介绍完善
-1、_detanx.stringHTU(str)在循环调用时，每次结束之后需要重置stringHTUarr数组为空，stringHTUarr = []。
-2、多个方法添加用法示例。
-3、解决repeatEle(arr)方法无法判断元素为NaN时是否重复
-
+1、无
 ### 方法api列表
+#### isUSD
+```
+//检查其是否符合美元书写格式
+用法:  _detanx.isUSD(str)
+str 需检测的字段
+示例：_detanx.isUSD("$1,023,032.03") // true
+      _detanx.isUSD("$3,432,12.12") // false
+```
 #### strAllSub
-```javascript
+```
 //将某个字符串中的某个字段全部替换为新的字段，返回替换后的字符串
 用法: _detanx.strAllSub(str, oldStr, newStr, isIgnoreCase)
 str：目标字符串
