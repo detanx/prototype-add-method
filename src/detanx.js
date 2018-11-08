@@ -4,12 +4,11 @@
   var _options={
       default_word:'default hello'                
   }
-  let stringHTUarr = [],//stringHTU存储index下标
-      numberExecutions = 0;//arraySum执行次数
   //定义一些api
   var _plugin_api = {
 /**
   * @description 将某个字符串中的某个字段全部替换为新的字段
+  * @example 用法: _detanx.strAllSub(str, oldStr, newStr, isIgnoreCase)
   * @param str 目标字符串
   * @param oldStr {string}  - 目标字符串中需要替换的字段.
   * @param newStr {string}  - 替换成新的字段.
@@ -23,6 +22,9 @@
       isIgnoreCase = 'g'
     }
     try {
+      if(typeof str !== "string" && typeof oldStr !== "string" && typeof newStr !== "string" ) {
+        throw new SyntaxError('parameter is not a string.' );
+      }
       if(typeof oldStr === 'undefined') {
         throw new SyntaxError('strAllSub methods lack of parameters.' );
       }
@@ -37,7 +39,8 @@
     }
   },
 /**
-  * @description 查找字符串中某个字符串的所有起始位置
+  * @description 查找字符串中某个字符的所有起始位置
+  * @example 用法: _detanx.strCharPos(str, subStr)
   * @param str 目标字符串
   * @param subStr {string}  - 查找的字符串.
   * @return {array}
@@ -45,6 +48,9 @@
   strCharPos : function(str, subStr) {
     let arr = [];
     try {
+      if(typeof str !== "string") {
+        throw new SyntaxError('first parameter is not a string.' );
+      }
       if(typeof subStr === 'undefined') {
         throw new SyntaxError('strCharPos methods lack of parameters.')
       }
@@ -61,26 +67,37 @@
   },
 /**
   * @description 查找数组（限一维、二维数组）中某个字符的所有位置
+  * @example 用法: _detanx.arrayCharPos(arr, target)
   * @param arr 目标数组
   * @param target 查询元素
   * @return {array}
 */
   arrayCharPos : function(arr, target) {
-    var result = [];
-    for(let i = 0;i < arr.length; i ++) {
-      if(arr[i] instanceof Array) {
-        arr[i].filter(function(item,index) {
-          return item === target && result.push([i,index]);
+    try {
+      if(!(arr instanceof Array)){
+        throw new SyntaxError('first parameter is not an Array.' );
+      }else {
+        var result = [];
+        for(let i = 0;i < arr.length; i ++) {
+          if(arr[i] instanceof Array) {
+            arr[i].filter(function(item,index) {
+              return item === target && result.push([i,index]);
+            });
+          }
+        } 
+        arr.filter(function(item,index) {
+          return item === target && result.push(index);
         });
+        return result;
       }
-    } 
-    arr.filter(function(item,index) {
-      return item === target && result.push(index);
-    });
-    return result;
+    }
+    catch (err) {
+      console.error(err);
+    }
   },
 /**
   * @description 任意维度数组去重
+  * @example 用法: _detanx.arrayDeweight(arr)
   * @param arr 目标数组
   * @return {array}
 */
@@ -89,73 +106,64 @@
     function isNative(api){
       return /native code/.test(api.toString()) && typeof api !== 'undefined'
     }
-    for (let i = 0;i < arr.length;i ++){
-      if(arr[i] instanceof Array){
-        if(isNative(Set)) {
-          arr[i] = Array.from(new Set(arr[i]));
-        }
-        else {
-          let newarr = [];
-          let len = arr[i].length;
-          for(let j = 0 ; j < len ; j ++ ) {
-            if(newarr.indexOf(arr[i][j]) === -1) {
-              newarr.push(arr[i][j])
+    try {
+      if(!(arr instanceof Array)){
+        throw new SyntaxError('parameter is not an Array.' );
+      }else {
+        for (let i = 0;i < arr.length;i ++){
+          if(arr[i] instanceof Array){
+            if(isNative(Set)) {
+              arr[i] = Array.from(new Set(arr[i]));
             }
+            else {
+              let newarr = [];
+              let len = arr[i].length;
+              for(let j = 0 ; j < len ; j ++ ) {
+                if(newarr.indexOf(arr[i][j]) === -1) {
+                  newarr.push(arr[i][j])
+                }
+              }
+              arr[i] = newarr;
+            }
+            this.arrayDeweight(arr[i]);
           }
-          arr[i] = newarr;
         }
-        this.arrayDeweight(arr[i]);
+        return Array.from(new Set(arr));;
       }
     }
-    return Array.from(new Set(arr));;
-  },
-/**
-  * @description 任意维度数组求和
-  * @param arr 目标数组
-  * @return {array}
-*/
-  arraySum : function(arr) {
-    let sum = 0;
-    ++ numberExecutions;
-    if(numberExecutions === 1) {
-      arr.forEach( (item) => 
-      {
-        if(typeof item === 'number' && !isNaN(item)) {
-          sum += item
-        }
-      });
+    catch (err) {
+      console.error(err);
     }
-    for (let i = 0;i < arr.length;i ++){
-      if(arr[i] instanceof Array){
-        arr[i].forEach( (item) => 
-        {
-          if(typeof item === 'number' && !isNaN(item)) {
-            sum += item
-          }
-        });
-        arr[i].arraySum();
-      }
-    }
-    return sum;
   },
 
 /**
   * @description 数组移除元素item
+  * @example 用法: _detanx.removeItem(arr, item)
   * @param arr 目标数组
   * @param item 移除元素
   * @return {array}
 */
   removeItem : function(arr, item){
-    return arr.filter(function(ele){
-      if(isNaN(item)) {
-        return isNaN(ele) != isNaN(item);
+    try {
+      if(!(arr instanceof Array)){
+        throw new SyntaxError('first parameter is not an Array.' );
       }else {
-        return ele !== item;
+        return arr.filter(function(ele){
+          if(isNaN(item)) {
+            return isNaN(ele) != isNaN(item);
+          }else {
+            return ele !== item;
+          }
+        })
       }
-    })
+    }
+    catch (err) {
+      console.error(err);
+    }
   },
 /**
   * @description 数组指定位置index处添加元素item
+  * @example 用法: _detanx.addItem(arr, item, index)
   * @param arr 目标数组
   * @param item 添加元素
   * @param index 添加位置
@@ -163,6 +171,9 @@
 */
   addItem : function(arr, item, index) {
     try {
+      if(!(arr instanceof Array)){
+        throw new SyntaxError('first parameter is not an Array.' );
+      }
       if(typeof item === 'undefined') {
         throw new SyntaxError('addItem methods lack of parameters.' );
       }
@@ -179,24 +190,33 @@
   },
 /**
   * @description 获取数组重复出现的元素
-  * @example arr.repeatEle()
+  * @example 用法: _detanx.repeatEle(arr)
+  * @param arr 目标数组
   * @return {array}
 */
   repeatEle : function(arr) {
-    var len = arr.length;
-    var newarr = [],toArr = [];
-    for(let j = 0;j < len;j ++) {
-      toArr.push((isNaN(arr[j]) === true ? JSON.stringify(arr[j]) : arr[j]))
-    }
-    for(let i = 0; i< len;i ++) {
-      var temp = toArr[0];
-      toArr.shift()
-      if(toArr.indexOf(temp) != -1 && newarr.indexOf(temp) == -1) {
-        temp = temp === "null" ? NaN:temp;
-        newarr.push(temp)
+    try {
+      if(!(arr instanceof Array)){
+        throw new SyntaxError('parameter is not an Array.' );
+      }else {
+        var len = arr.length;
+        var newarr = [],toArr = [];
+        for(let j = 0;j < len;j ++) {
+          toArr.push((isNaN(arr[j]) === true ? JSON.stringify(arr[j]) : arr[j]))
+        }
+        for(let i = 0; i< len;i ++) {
+          var temp = toArr[0];
+          toArr.shift()
+          if(toArr.indexOf(temp) != -1 && newarr.indexOf(temp) == -1) {
+            temp = temp === "null" ? NaN:temp;
+            newarr.push(temp)
+          }
+        }
+        return newarr
       }
+    }catch(err) {
+      console.error(err)
     }
-    return newarr
   },
 /**
   * @description 获取鼠标位置
@@ -226,23 +246,32 @@
   * @description 判断js数组/对象是否为空
   * isPrototypeOf() 验证一个对象是否存在于另一个对象的原型链上。即判断 Object 是否存在于 $obj 的原型链上。js中一切皆对象，也就是说，Object 也存在于数组的原型链上，因此这里数组需要先于对象检验。
   * Object.keys() 返回一个由给定对象的自身可枚举属性组成的数组，数组中属性名的排列顺序和使用 for...in 循环遍历该对象时返回的顺序一致
+  * @example 用法: _detanx.isEmpty($obj)
   * @param $obj
   * @return {boolean}
 */
   isEmpty: ($obj) => {
-    // 检验非数组/对象类型  EX：undefined   null  ''  根据自身要求添加其他适合的为空的值  如：0 ,'0','  '  等
-    if (!$obj && $obj !== 0 && $obj !== '') return true;
-    if (typeof $obj === "string") {
-      $obj = $obj.replace(/\s*/g, "");//移除字符串中所有 ''
-      if ($obj === '') return true;
+    try {
+      if(!($obj instanceof Array) && !($obj instanceof Object) ){
+        throw new SyntaxError('parameter is not an Array or an Object.' );
+      }else {
+        // 检验非数组/对象类型  EX：undefined   null  ''  根据自身要求添加其他适合的为空的值  如：0 ,'0','  '  等
+        if (!$obj && $obj !== 0 && $obj !== '') return true;
+        if (typeof $obj === "string") {
+          $obj = $obj.replace(/\s*/g, "");//移除字符串中所有 ''
+          if ($obj === '') return true;
+        }
+        return (Array.isArray($obj) && $obj.length === 0) || (Object.prototype.isPrototypeOf($obj) && Object.keys($obj).length === 0);
+      }
+    }catch(err) {
+      console.error(err)
     }
-    return (Array.isArray($obj) && $obj.length === 0) || (Object.prototype.isPrototypeOf($obj) && Object.keys($obj).length === 0);
   },
 
 
 /**
  * @description 字符串/数组B的字符任意一种组合是否是字符串/数组A的子串
- * @example 用法: isInclude([1, 2, 3, 4], [2,3]) // true,isInclude("abc123", "cba") // true,
+ * @example 用法: _detanx.isInclude([1, 2, 3, 4], [2,3]) // true,isInclude("abc123", "cba") // true,
  * @param {Array/String} A 原字符串/数组
  * @param {Array/String} B 子字符串/数组
  * @return {Boolean} 
@@ -287,7 +316,7 @@
       
 /**
  * @description //生成随机n个字母或数字
- * @example 用法: randomCode(n) 
+ * @example 用法: _detanx.randomCode(n) 
  * @param {Number} n 整数
  * @return {String} 
  */
@@ -317,43 +346,47 @@
   },
 /**
  * @description //字符串驼峰式转下划线
- * @example 用法: stringHTU(str) 多次调用，每次使用后须将stringHTUarr置为空，stringHTUarr=[]
+ * @example 用法: _detanx.stringHTU(str)
  * @param {String} str 需转换的字符串
  * @return {String} 
  * HTU (Hump transfer underline)
 */
   stringHTU:function(str) {
-    const UP_CASE_REG =/[A-Z]/g;
-    const NUMBER_REG=/[A-Za-z][\d]/g
-    let newstr = ""
-    getIndex(UP_CASE_REG, str)
-    getIndex(NUMBER_REG, str)
-    stringHTUarr.sort((a,b)=> a-b )
-    for(let i = 0;i < stringHTUarr.length; i ++) {
-      if(i === 0) {
-          newstr += str.slice(0,stringHTUarr[i]) + "_"
+    try {
+      if(typeof str !== "string") {
+        throw new TypeError(str + ' is not a string.' );
+      }else {
+        let arr = [];
+        function getIndex(reg, strs) {
+          do{
+            reg.test(strs)
+            if(reg.lastIndex !== 0 && reg.lastIndex-1 !== 0){//reg.lastIndex-1 !== 0判断首字母是否大写
+              arr.push(reg.lastIndex-1)
+            }
+          }while(reg.lastIndex > 0)
+        }
+        const UP_CASE_REG =/[A-Z]/g;
+        const NUMBER_REG=/[A-Za-z][\d]/g
+        let newstr = ""
+        getIndex(UP_CASE_REG, str)
+        getIndex(NUMBER_REG, str)
+        arr.sort((a,b)=> a-b )
+        for(let i = 0;i < arr.length; i ++) {
+            if(i === 0) {
+                newstr += str.slice(0,arr[i]) + "_"
+            }
+            else {
+                newstr += str.slice(arr[i-1],arr[i]) + "_"
+            }
+        }
+        newstr += str.slice(arr[arr.length-1])
+        arr = []
+        return newstr.toLowerCase()
       }
-      else {
-          newstr += str.slice(stringHTUarr[i-1],stringHTUarr[i]) + "_"
-      }
+    }catch(err) {
+      console.error(err)
     }
-    newstr += str.slice(stringHTUarr[stringHTUarr.length-1])
-    return newstr.toLowerCase()
-  },
-/**
- * @description //获取大写字母及数字下标
- * @example 用法:  getIndex(reg, str)
- * @param {RegExp} reg 匹配大写/数字的正则表达式
- * @param {String} str 需转换的字符串
- * @return {Array} 
-*/
-  getIndex: function(reg, str) {
-    do{
-      reg.test(str)
-      if(reg.lastIndex !== 0 && reg.lastIndex-1 !== 0){//reg.lastIndex-1 !== 0判断首字母是否大写
-        stringHTUarr.push(reg.lastIndex-1)
-      }
-    }while(reg.lastIndex > 0)
+    
   },
 /**
  * @description //检查其是否符合美元书写格式
@@ -361,9 +394,17 @@
  * @param {String} str 需检测的字段
  * @return {Boolean} 
 */
-  isUSD:function(str) {       
-    var re = /^\$([1-9]\d{0,2}(,\d{3})*|0)(\.\d{2})?$/;
-    return re.test(str);
+  isUSD:function(str) {
+    try {
+      if(typeof str !== "string") {
+        throw new TypeError(str + ' is not a string.' );
+      }else {
+        var re = /^\$([1-9]\d{0,2}(,\d{3})*|0)(\.\d{2})?$/;
+        return re.test(str);
+      }
+    }catch(err) {
+      console.error(err)
+    }
   }
 }
     //这里确定了插件的名称
@@ -381,7 +422,7 @@
       throw new Error("_detanx is defined.")
     }
   }catch(err) {
-    console.log(err)
+    console.error(err)
   }
     
 })();

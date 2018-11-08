@@ -14,15 +14,18 @@
   2、require('prototype-add-method')
   3、引入dist/prototype-add-method.js
 ```
-### v1.0.9更新
+### v1.0.10更新
 #### 插件名
 1、插件名暂定为_detanx，后续如有变化将在版本更新中说明。
 #### 方法api更新
 1、新增检查其是否符合美元书写格式方法：isUSD(str)
+2、移除arraySum数组求和方法
 #### bug修改
-1、无
+1、stringHTU方法不再需要手动情况引用数组
+2、getIndex方法调用方式错误，改变改方法的声明方式
 #### api方法介绍完善
-1、无
+1、对之前未添加异常处理的方法添加相应的异常处理
+2、完善接口的使用说明
 ### 方法api列表
 #### isUSD
 ```
@@ -67,13 +70,6 @@ arr：目标数组
 示例：_detanx.arrayDeweight([1,2,3,2]) // [1,2,3]
     _detanx.arrayDeweight([[1,2,3,3],[1,2,1]]) // [[1,2,3],[1,2]]
 ```
-#### arraySum
-```
-//数组求和，一维数组至多维数组，，当数组中传入null，undefined，NaN，字符串等非数字会被忽略，返回数组中数字相加之和（Number类型）
-用法: _detanx.arraySum(arr)
-arr：目标数组
-示例：_detanx.arraySum([1,2,3,NaN,undefined]) // 6
-```
 #### removeItem
 ```
 //数组移除元素item（包括NaN、undefined、null），一维数组，返回移除元素item后的数组
@@ -84,18 +80,20 @@ target：需要移除的元素
 ```
 #### addItem
 ```
-//数组移指定位置index处添加元素item，一维数组，返回元素item后的数组
-用法: _detanx.addItem(arr, target)
+//数组指定位置（index）添加元素item，一维数组，返回元素item后的数组
+用法: _detanx.addItem(arr, target, index)
 arr：目标数组
 target：需要添加的元素
-示例：_detanx.addItem([1,2,3,NaN],1) // [1,1,2,3,NaN]
+index 元素添加的位置，如果没传则默认在数组末尾添加
+示例：_detanx.addItem([1,2,3,NaN],1,1) // [1,1,2,3,NaN]
+      _detanx.addItem([1,2,3,NaN],1) // [1,2,3,NaN,1]
 ```
 #### repeatEle
 ```
 //数组重复出现的元素，一维数组，返回所有重复元素组成的新数组
 用法: _detanx.repeatEle(arr)
-示例：_detanx.repeatEle([1,2,3,NaN,2,NaN]) // [2,NaN]
 arr：目标数组
+示例：_detanx.repeatEle([1,2,3,NaN,2,NaN]) // [2,NaN]
 ```
 #### 获取鼠标位置
 ```
