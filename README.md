@@ -10,15 +10,14 @@
  在项目中安装：
   npm i prototype-add-method
  使用：
-  1、import 'prototype-add-method'
-  2、require('prototype-add-method')
-  3、引入dist/prototype-add-method.js
+  1、引入文件dist/prototype-add-method.js
 ```
 ### v1.0.10更新
 #### 插件名
 1、插件名暂定为_detanx，后续如有变化将在版本更新中说明。
 #### 方法api更新
-1、新增检查其是否符合美元书写格式方法：isUSD(str)
+1、新增检查其是否符合美元书写格式方法：_detanx.isUSD(str)
+2、新增原生Ajax请求方法：_detanx.xhrAjax(options)
 2、移除arraySum数组求和方法
 #### bug修改
 1、stringHTU方法不再需要手动情况引用数组
@@ -34,6 +33,27 @@
 str 需检测的字段
 示例：_detanx.isUSD("$1,023,032.03") // true
       _detanx.isUSD("$3,432,12.12") // false
+```
+#### xhrAjax
+```
+//封装原生Ajax请求
+用法:  _detanx.xhrAjax({options})
+str 需检测的字段
+示例：* _detanx.xhrAjax({ 
+ * type:"POST", 
+ * url:"ajax.php", 
+ * dataType:"json", 
+ * data:{"val1":"abc","val2":123,"val3":"456"}, 
+ * beforeSend:function(){ 
+ *   //some js code 
+ * }, 
+ * success:function(msg){ 
+ *   console.log(msg) 
+ * }, 
+ * error:function(){ 
+ *   console.log("error") 
+ * } 
+ * })
 ```
 #### strAllSub
 ```
